@@ -17,11 +17,17 @@ using gd21::Settings;
 // We only override the count when actually inside a PlayLayer; outside
 // (main menu, editor, end-screen) we fall back to vanilla so editor
 // playback / menu animations stay smooth.
+//
+// Hook priority is "VeryLate" so any input mod / bot (TCBot, EchoBot,
+// macro players) that hooks the same vtable slot runs BEFORE us. They get
+// to read / modify the delta their way, then we adjust step count from
+// the final value. Bots typically only care about per-frame timing, not
+// internal substep count, so they don't break.
 // ---------------------------------------------------------------------------
 class $modify(Gd21BaseGameLayer, GJBaseGameLayer) {
     static void onModify(auto& self) {
-        // Run before mods that hook getModifiedDelta for input timing.
-        (void) self.setHookPriority("GJBaseGameLayer::getModifiedDelta", Priority::Early);
+        (void) self.setHookPriority(
+            "GJBaseGameLayer::getModifiedDelta", Priority::VeryLate);
     }
 
     double getModifiedDelta(float delta) {
@@ -37,18 +43,17 @@ class $modify(Gd21BaseGameLayer, GJBaseGameLayer) {
         if (use21) {
             gd21::g_stepCount = gd21::compute21StepCount(modified, timewarp);
         } else {
-            // Outside a level OR user picked "fixed-240": fall back to the
-            // exact vanilla formula so the patch (if still enabled) is a
+            // Outside a level OR user picked "fixed-240" / TCBot compat:
+            // fall back to the exact vanilla formula so the patch is a
             // no-op in behavior.
             gd21::g_stepCount = gd21::computeVanillaStepCount(modified, timewarp);
         }
 
-        if (s.logPhysics && inLevel) {
+        if (s.logPhysics.load(std::memory_order_relaxed) && inLevel) {
             log::debug(
                 "gd21: delta={:.5f} tw={:.3f} mode={} steps={}",
                 modified, timewarp, use21 ? "2.1" : "vanilla",
-                gd21::g_stepCount
-            );
+                gd21::g_stepCount);
         }
 
         return modified;
@@ -71,23 +76,34 @@ namespace {
         gd21::enableStepRatePatch(s.enabled);
 
         log::info(
-            "gd21: settings — enabled={} rate={} slope21={} keepBugs={}",
-            s.enabled, s.physicsRate, s.slopePhysics21, s.preserve21Bugs
-        );
+            "gd21: settings — enabled={} rate={} tcbot={} slope21={} "
+            "orb21={} pad21={} wave21={} bugs={}",
+            s.enabled, s.physicsRate, s.tcbotCompat,
+            s.slopePhysics21.load(), s.orbPriority21.load(),
+            s.padBug21.load(),       s.waveHitbox21.load(),
+            s.preserve21Bugs.load());
     }
 }
 
 $on_mod(Loaded) {
     applyAllSettings();
 
-    listenForSettingChanges<bool>("enabled",
+    listenForSettingChanges<bool>(       "enabled",
         +[](bool) { applyAllSettings(); });
     listenForSettingChanges<std::string>("physics-rate",
         +[](std::string) { applyAllSettings(); });
-    listenForSettingChanges<bool>("slope-physics-21",
+    listenForSettingChanges<bool>(       "tcbot-compat",
         +[](bool) { applyAllSettings(); });
-    listenForSettingChanges<bool>("preserve-21-bugs",
+    listenForSettingChanges<bool>(       "slope-physics-21",
         +[](bool) { applyAllSettings(); });
-    listenForSettingChanges<bool>("log-physics",
+    listenForSettingChanges<bool>(       "orb-priority-21",
+        +[](bool) { applyAllSettings(); });
+    listenForSettingChanges<bool>(       "pad-bug-21",
+        +[](bool) { applyAllSettings(); });
+    listenForSettingChanges<bool>(       "wave-hitbox-21",
+        +[](bool) { applyAllSettings(); });
+    listenForSettingChanges<bool>(       "preserve-21-bugs",
+        +[](bool) { applyAllSettings(); });
+    listenForSettingChanges<bool>(       "log-physics",
         +[](bool) { applyAllSettings(); });
 }

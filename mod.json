@@ -5,7 +5,7 @@
     },
     "id": "devin.gd-21-physics",
     "name": "GD 2.1 Physics",
-    "version": "v0.1.0",
+    "version": "v0.2.0",
     "developer": "the411539",
     "description": "Restores 2.1 physics & bugs in GD 2.2 so legacy 2.1 levels (e.g. Warcora) are playable again.",
     "tags": ["gameplay", "performance"],
@@ -18,32 +18,56 @@
             "type": "bool",
             "default": true,
             "name": "Enable 2.1 Physics",
-            "description": "When on, replaces 2.2 player physics with the 2.1 model. Restart the level for the change to fully apply."
+            "description": "Master toggle for the entire mod. When off the game plays exactly like vanilla 2.2."
         },
         "physics-rate": {
             "type": "string",
             "default": "fps-locked-21",
             "one-of": ["fps-locked-21", "fixed-240"],
             "name": "Physics Step Rate",
-            "description": "fps-locked-21 = 4 physics steps per frame like 2.1 (FPS-dependent). fixed-240 = 2.2 default. fps-locked-21 is what reproduces the high-FPS 2.1 behaviour."
+            "description": "fps-locked-21 = 4 substeps per frame like 2.1 (FPS-dependent; reproduces wave clip & ship feel). fixed-240 = 2.2 default 240Hz."
+        },
+        "tcbot-compat": {
+            "type": "bool",
+            "default": false,
+            "name": "TCBot / Macro Compatibility",
+            "description": "Forces fixed-240 physics rate so input macros recorded under 2.2 keep working. Behavioural 2.1 fixes (slopes/orbs/pads/wave) stay on."
         },
         "slope-physics-21": {
             "type": "bool",
             "default": true,
             "name": "2.1 Slope Physics",
-            "description": "Re-enables 2.1 slope behaviour (catapulting, slope clipping, etc.). Disable to keep 2.2 slopes."
+            "description": "Restores 2.1 slope behaviour (catapulting, no slope-velocity smoothing). Disable to keep stock 2.2 slopes."
+        },
+        "orb-priority-21": {
+            "type": "bool",
+            "default": true,
+            "name": "2.1 Orb / Ring Priority",
+            "description": "Activates orbs in insertion order (the 2.1 way) when several overlap, instead of 2.2's reordered priority."
+        },
+        "pad-bug-21": {
+            "type": "bool",
+            "default": true,
+            "name": "2.1 Pad Bounces",
+            "description": "Restores 2.1 yellow/pink/red pad bounce behaviour, including the famous ball-on-yellow-pad infinite-bounce case."
+        },
+        "wave-hitbox-21": {
+            "type": "bool",
+            "default": true,
+            "name": "2.1 Wave Hitbox",
+            "description": "Reverts the wave's hitbox to the slightly-thicker 2.1 version (small effect; mostly visible on small wave)."
         },
         "preserve-21-bugs": {
             "type": "bool",
             "default": true,
-            "name": "Preserve 2.1 Bugs",
-            "description": "Keeps known 2.1 physics quirks/bugs that levels like Warcora rely on (corner snap, wave hitbox slice, gravity portal seam, etc.)."
+            "name": "Preserve Misc 2.1 Bugs",
+            "description": "Keeps assorted 2.1 quirks (corner snap, gravity-portal seam, robot-jump frame timing, etc.) — group toggle for the smaller fixes."
         },
         "log-physics": {
             "type": "bool",
             "default": false,
             "name": "Verbose Physics Log",
-            "description": "Spam the Geode console with per-frame velocity/position info (debug only)."
+            "description": "Spams the Geode console with per-frame velocity / step-count / slope info. Debug only — do NOT enable for normal play."
         }
     },
     "links": {

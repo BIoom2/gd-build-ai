@@ -7,20 +7,24 @@
 
 namespace gd21 {
 
-// Lightweight cached view of the mod's settings, refreshed whenever the user
-// toggles something in the Geode mod menu.
-//
-// `useFpsLocked21Mode` is the only field read from the per-frame physics
-// hook, so we keep it as a `std::atomic<bool>` to avoid a torn read from a
-// concurrent settings UI thread without needing a mutex.
+// Cached view of the mod's settings, refreshed from the Geode Mod object
+// whenever the user toggles something. We keep small atomic flags for
+// values read inside hot per-frame / per-physics-step hooks so the GUI
+// thread can never tear them.
 struct Settings {
+    // ---- Hot-path atomics (read every frame / step) -----------------
     std::atomic<bool> useFpsLocked21Mode{true};
+    std::atomic<bool> slopePhysics21{true};
+    std::atomic<bool> orbPriority21{true};
+    std::atomic<bool> padBug21{true};
+    std::atomic<bool> waveHitbox21{true};
+    std::atomic<bool> preserve21Bugs{true};
+    std::atomic<bool> logPhysics{false};
 
+    // ---- Cold settings (only read on apply / UI) --------------------
     bool enabled = true;
-    std::string physicsRate = "fps-locked-21"; // "fps-locked-21" or "fixed-240"
-    bool slopePhysics21 = true;
-    bool preserve21Bugs = true;
-    bool logPhysics = false;
+    std::string physicsRate = "fps-locked-21"; // "fps-locked-21" | "fixed-240"
+    bool tcbotCompat = false;
 
     static Settings& get();
     void refreshFromMod();
