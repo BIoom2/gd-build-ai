@@ -1,0 +1,64 @@
+{
+    "geode": "5.6.1",
+    "gd": {
+        "win": "2.2081"
+    },
+    "id": "the411539.max-quality",
+    "name": "Max Quality",
+    "version": "v1.0.0",
+    "developer": "the411539",
+    "description": "Forces maximum graphical detail in Geometry Dash: UHD textures always, smooth bilinear/trilinear/anisotropic filtering, and a particle-count multiplier with cap removal.",
+    "tags": ["enhancement", "performance"],
+    "settings": {
+        "enabled": {
+            "type": "bool",
+            "default": true,
+            "name": "Enable Max Quality",
+            "description": "Master toggle. When off, the mod is a complete no-op and the game renders exactly like vanilla."
+        },
+        "force-uhd": {
+            "type": "bool",
+            "default": true,
+            "name": "Force UHD Textures",
+            "description": "Always select the -uhd asset variants regardless of screen resolution. Highest fidelity, slightly higher VRAM use."
+        },
+        "texture-filter": {
+            "type": "string",
+            "default": "trilinear",
+            "one-of": ["nearest", "bilinear", "trilinear"],
+            "name": "Texture Filtering",
+            "description": "nearest = sharp pixels (vanilla-ish). bilinear = smoothed when scaled. trilinear = bilinear + mipmap blending (smoothest, recommended)."
+        },
+        "anisotropic": {
+            "type": "int",
+            "default": 16,
+            "min": 1,
+            "max": 16,
+            "name": "Anisotropic Filtering",
+            "description": "Anisotropic level for slanted/scaled sprites. 1 = off, 16 = maximum quality. Combined with trilinear filtering this gives a strong anti-aliasing effect on sprite edges. Ignored if your GPU does not support GL_EXT_texture_filter_anisotropic."
+        },
+        "particle-multiplier": {
+            "type": "float",
+            "default": 2.0,
+            "min": 0.5,
+            "max": 8.0,
+            "name": "Particle Multiplier",
+            "description": "Multiplies every emitter's totalParticles. 1.0 = vanilla, 2.0 = twice as many, 4.0 = very dense (perf cost). 0.5 = halved (lower-end GPUs)."
+        },
+        "uncap-particles": {
+            "type": "bool",
+            "default": true,
+            "name": "Remove Particle Cap",
+            "description": "Removes Geometry Dash's internal hard cap on simultaneously-alive particles so dense effects (rocket trails, explosions) can fully render."
+        },
+        "verbose-log": {
+            "type": "bool",
+            "default": false,
+            "name": "Verbose Log",
+            "description": "Spams the Geode console with per-texture / per-emitter info. Debug only — leave off for normal play."
+        }
+    },
+    "links": {
+        "source": "https://github.com/BIoom2/gd-build-ai"
+    }
+}
