@@ -190,11 +190,12 @@ void retuneAllTextures() {
     if (!dict) return;
 
     int touched = 0;
-    CCDictElement* el = nullptr;
-    CCDICT_FOREACH(dict, el) {
-        // typeinfo_cast is the cross-DLL-safe version of dynamic_cast
-        // recommended by Geode for cocos2d types.
-        if (auto* tex = typeinfo_cast<CCTexture2D*>(el->getObject())) {
+    // CCDICT_FOREACH was removed in Geode v5 in favour of the
+    // typed range adapter CCDictionaryExt<Key, Value>. Note that the
+    // second template parameter is the *value type*, not a pointer to
+    // it — CCDictionaryExt internally turns it into Value*.
+    for (auto [path, value] : CCDictionaryExt<std::string_view, CCObject>(dict)) {
+        if (auto* tex = typeinfo_cast<CCTexture2D*>(value)) {
             applyMaxQualityFilter(tex);
             ++touched;
         }
