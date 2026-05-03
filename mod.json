@@ -1,0 +1,52 @@
+{
+    "geode": "5.6.1",
+    "gd": {
+        "win": "2.2081"
+    },
+    "id": "devin.gd-21-physics",
+    "name": "GD 2.1 Physics",
+    "version": "v0.1.0",
+    "developer": "the411539",
+    "description": "Restores 2.1 physics & bugs in GD 2.2 so legacy 2.1 levels (e.g. Warcora) are playable again.",
+    "tags": ["gameplay", "performance"],
+    "incompatibilities": {
+        "syzzi.click_between_frames": "*",
+        "zmx.cbf-lite": "*"
+    },
+    "settings": {
+        "enabled": {
+            "type": "bool",
+            "default": true,
+            "name": "Enable 2.1 Physics",
+            "description": "When on, replaces 2.2 player physics with the 2.1 model. Restart the level for the change to fully apply."
+        },
+        "physics-rate": {
+            "type": "string",
+            "default": "fps-locked-21",
+            "one-of": ["fps-locked-21", "fixed-240"],
+            "name": "Physics Step Rate",
+            "description": "fps-locked-21 = 4 physics steps per frame like 2.1 (FPS-dependent). fixed-240 = 2.2 default. fps-locked-21 is what reproduces the high-FPS 2.1 behaviour."
+        },
+        "slope-physics-21": {
+            "type": "bool",
+            "default": true,
+            "name": "2.1 Slope Physics",
+            "description": "Re-enables 2.1 slope behaviour (catapulting, slope clipping, etc.). Disable to keep 2.2 slopes."
+        },
+        "preserve-21-bugs": {
+            "type": "bool",
+            "default": true,
+            "name": "Preserve 2.1 Bugs",
+            "description": "Keeps known 2.1 physics quirks/bugs that levels like Warcora rely on (corner snap, wave hitbox slice, gravity portal seam, etc.)."
+        },
+        "log-physics": {
+            "type": "bool",
+            "default": false,
+            "name": "Verbose Physics Log",
+            "description": "Spam the Geode console with per-frame velocity/position info (debug only)."
+        }
+    },
+    "links": {
+        "source": "https://github.com/BIoom2/gd-build-ai"
+    }
+}

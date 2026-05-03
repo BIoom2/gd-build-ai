@@ -1,0 +1,26 @@
+# Build outputs
+build/
+build-*/
+out/
+*.geode
+*.dll
+*.pdb
+*.exp
+*.lib
+*.obj
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.swp
+
+# Geode/CMake
+CMakeUserPresets.json
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# OS
+.DS_Store
+Thumbs.db
