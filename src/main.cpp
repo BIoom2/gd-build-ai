@@ -20,7 +20,7 @@ class $modify(PercentEditorUI, EditorUI) {
         if (percent < 0) percent = 0;
         if (percent > 100) percent = 100;
 
-        auto str = fmt::format("{}%", percent);
+        auto str = std::to_string(percent) + "%";
         m_fields->m_percentLabel->setString(str.c_str());
     }
 
