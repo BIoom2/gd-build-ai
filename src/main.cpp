@@ -11,18 +11,22 @@ class $modify(PercentEditorUI, EditorUI) {
         CCLabelBMFont* m_percentLabel = nullptr;
         float m_hideTimer = 0.f;
         bool m_isVisible = false;
+        int m_lastPercent = -1;
     };
 
-    void showPercentLabel() {
-        if (!m_fields->m_percentLabel) return;
-        if (!m_positionSlider) return;
-        if (!m_editorLayer) return;
-
+    int getCurrentPercent() {
+        if (!m_positionSlider) return 0;
         float sliderVal = m_positionSlider->getValue();
         int percent = static_cast<int>(std::round(sliderVal * 100.f));
         if (percent < 0) percent = 0;
         if (percent > 100) percent = 100;
+        return percent;
+    }
 
+    void showPercentLabel() {
+        if (!m_fields->m_percentLabel) return;
+
+        int percent = this->getCurrentPercent();
         auto str = std::to_string(percent) + "%";
         m_fields->m_percentLabel->setString(str.c_str());
 
@@ -30,19 +34,24 @@ class $modify(PercentEditorUI, EditorUI) {
         m_fields->m_percentLabel->setOpacity(180);
         m_fields->m_isVisible = true;
         m_fields->m_hideTimer = 1.5f;
-
-        this->unschedule(schedule_selector(PercentEditorUI::onHideTick));
-        this->schedule(schedule_selector(PercentEditorUI::onHideTick), 0.05f);
+        m_fields->m_lastPercent = percent;
     }
 
-    void onHideTick(float dt) {
-        m_fields->m_hideTimer -= dt;
-        if (m_fields->m_hideTimer <= 0.f) {
-            this->unschedule(schedule_selector(PercentEditorUI::onHideTick));
-            if (m_fields->m_percentLabel) {
+    void onPercentTick(float dt) {
+        if (!m_fields->m_percentLabel) return;
+
+        int percent = this->getCurrentPercent();
+        if (percent != m_fields->m_lastPercent) {
+            this->showPercentLabel();
+            return;
+        }
+
+        if (m_fields->m_isVisible) {
+            m_fields->m_hideTimer -= dt;
+            if (m_fields->m_hideTimer <= 0.f) {
                 m_fields->m_percentLabel->setVisible(false);
+                m_fields->m_isVisible = false;
             }
-            m_fields->m_isVisible = false;
         }
     }
 
@@ -73,30 +82,10 @@ class $modify(PercentEditorUI, EditorUI) {
         }
 
         m_fields->m_percentLabel = label;
+        m_fields->m_lastPercent = this->getCurrentPercent();
+
+        this->schedule(schedule_selector(PercentEditorUI::onPercentTick), 0.05f);
 
         return true;
-    }
-
-    $override
-    void sliderChanged(cocos2d::CCObject* sender) {
-        EditorUI::sliderChanged(sender);
-        this->showPercentLabel();
-    }
-
-    $override
-    void scrollWheel(float y, float x) {
-        EditorUI::scrollWheel(y, x);
-        this->schedule(schedule_selector(PercentEditorUI::onUpdatePercent), 0.05f);
-    }
-
-    void onUpdatePercent(float dt) {
-        this->unschedule(schedule_selector(PercentEditorUI::onUpdatePercent));
-        this->showPercentLabel();
-    }
-
-    $override
-    void moveGamelayer(cocos2d::CCPoint offset) {
-        EditorUI::moveGamelayer(offset);
-        this->showPercentLabel();
     }
 };
