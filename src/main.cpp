@@ -31,7 +31,7 @@ class $modify(PercentEditorUI, EditorUI) {
         m_fields->m_percentLabel->setString(str.c_str());
 
         m_fields->m_percentLabel->setVisible(true);
-        m_fields->m_percentLabel->setOpacity(180);
+        m_fields->m_percentLabel->setOpacity(200);
         m_fields->m_isVisible = true;
         m_fields->m_hideTimer = 1.5f;
         m_fields->m_lastPercent = percent;
@@ -60,9 +60,9 @@ class $modify(PercentEditorUI, EditorUI) {
         if (!EditorUI::init(editorLayer))
             return false;
 
-        auto label = CCLabelBMFont::create("0%", "bigFont.fnt");
-        label->setScale(0.4f);
-        label->setOpacity(180);
+        auto label = CCLabelBMFont::create("0%", "goldFont.fnt");
+        label->setScale(0.5f);
+        label->setOpacity(200);
         label->setID("editor-slider-percent"_spr);
         label->setVisible(false);
 
