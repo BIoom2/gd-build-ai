@@ -9,10 +9,13 @@ using namespace geode::prelude;
 class $modify(PercentEditorUI, EditorUI) {
     struct Fields {
         CCLabelBMFont* m_percentLabel = nullptr;
+        float m_hideTimer = 0.f;
+        bool m_isVisible = false;
     };
 
-    void updatePercentLabel() {
+    void showPercentLabel() {
         if (!m_fields->m_percentLabel) return;
+        if (!m_positionSlider) return;
         if (!m_editorLayer) return;
 
         float sliderVal = m_positionSlider->getValue();
@@ -22,6 +25,25 @@ class $modify(PercentEditorUI, EditorUI) {
 
         auto str = std::to_string(percent) + "%";
         m_fields->m_percentLabel->setString(str.c_str());
+
+        m_fields->m_percentLabel->setVisible(true);
+        m_fields->m_percentLabel->setOpacity(180);
+        m_fields->m_isVisible = true;
+        m_fields->m_hideTimer = 1.5f;
+
+        this->unschedule(schedule_selector(PercentEditorUI::onHideTick));
+        this->schedule(schedule_selector(PercentEditorUI::onHideTick), 0.05f);
+    }
+
+    void onHideTick(float dt) {
+        m_fields->m_hideTimer -= dt;
+        if (m_fields->m_hideTimer <= 0.f) {
+            this->unschedule(schedule_selector(PercentEditorUI::onHideTick));
+            if (m_fields->m_percentLabel) {
+                m_fields->m_percentLabel->setVisible(false);
+            }
+            m_fields->m_isVisible = false;
+        }
     }
 
     $override
@@ -33,6 +55,7 @@ class $modify(PercentEditorUI, EditorUI) {
         label->setScale(0.4f);
         label->setOpacity(180);
         label->setID("editor-slider-percent"_spr);
+        label->setVisible(false);
 
         if (m_positionSlider) {
             auto sliderPos = m_positionSlider->getPosition();
@@ -50,7 +73,6 @@ class $modify(PercentEditorUI, EditorUI) {
         }
 
         m_fields->m_percentLabel = label;
-        this->updatePercentLabel();
 
         return true;
     }
@@ -58,23 +80,23 @@ class $modify(PercentEditorUI, EditorUI) {
     $override
     void sliderChanged(cocos2d::CCObject* sender) {
         EditorUI::sliderChanged(sender);
-        this->updatePercentLabel();
+        this->showPercentLabel();
     }
 
     $override
     void scrollWheel(float y, float x) {
         EditorUI::scrollWheel(y, x);
-        this->schedule(schedule_selector(PercentEditorUI::onUpdatePercent), 0.f);
+        this->schedule(schedule_selector(PercentEditorUI::onUpdatePercent), 0.05f);
     }
 
     void onUpdatePercent(float dt) {
         this->unschedule(schedule_selector(PercentEditorUI::onUpdatePercent));
-        this->updatePercentLabel();
+        this->showPercentLabel();
     }
 
     $override
     void moveGamelayer(cocos2d::CCPoint offset) {
         EditorUI::moveGamelayer(offset);
-        this->updatePercentLabel();
+        this->showPercentLabel();
     }
 };
