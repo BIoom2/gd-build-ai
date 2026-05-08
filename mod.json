@@ -1,0 +1,17 @@
+{
+	"geode": "5.6.0",
+	"gd": {
+				"win": "2.2081",
+				"android": "2.2081",
+				"mac": "2.2081",
+				"ios": "2.2081"
+	},
+	"id": "bloom2.editor-slider-percentage",
+	"name": "Editor Slider Percentage",
+	"version": "v1.0.0",
+	"developer": "BIoom2",
+	"description": "Shows the current level percentage below the position slider in the editor",
+	"dependencies": {
+		"geode.node-ids": ">=v1.23.3"
+	}
+}
