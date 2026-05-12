@@ -8,7 +8,7 @@ namespace bloom::menu::windows {
 void draw_auto_clicker(bool* open) {
     auto& cfg = core::get_config();
 
-    if (!ImGui::Begin("AUTO CLICKER", open, ImGuiWindowFlags_AlwaysAutoResize)) {
+    if (!ImGui::Begin("AUTO CLICKER", open)) {
         ImGui::End();
         return;
     }

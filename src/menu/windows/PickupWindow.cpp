@@ -8,7 +8,7 @@ namespace bloom::menu::windows {
 void draw_pickup(bool* open) {
     auto& cfg = core::get_config();
 
-    if (!ImGui::Begin("PICKUP", open, ImGuiWindowFlags_AlwaysAutoResize)) {
+    if (!ImGui::Begin("PICKUP", open)) {
         ImGui::End();
         return;
     }

@@ -8,7 +8,7 @@ namespace bloom::menu::windows {
 void draw_utilities(bool* open) {
     auto& cfg = core::get_config();
 
-    if (!ImGui::Begin("UTILITIES", open, ImGuiWindowFlags_AlwaysAutoResize)) {
+    if (!ImGui::Begin("UTILITIES", open)) {
         ImGui::End();
         return;
     }

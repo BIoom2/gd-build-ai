@@ -62,7 +62,7 @@ void draw_tasbot(bool* open) {
     auto& bot_inst = bot::Bot::instance();
     auto& lib = bot::get_macro_library();
 
-    if (!ImGui::Begin("TASBOT", open, ImGuiWindowFlags_AlwaysAutoResize)) {
+    if (!ImGui::Begin("TASBOT", open)) {
         ImGui::End();
         return;
     }

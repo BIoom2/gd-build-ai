@@ -34,7 +34,7 @@ char g_output_buf[256] = {};
 void draw_internal_recorder(bool* open) {
     auto& cfg = core::get_config();
 
-    if (!ImGui::Begin("INTERNAL RECORDER", open, ImGuiWindowFlags_AlwaysAutoResize)) {
+    if (!ImGui::Begin("INTERNAL RECORDER", open)) {
         ImGui::End();
         return;
     }

@@ -9,7 +9,7 @@ namespace bloom::menu::windows {
 void draw_frame_advance(bool* open) {
     auto& cfg = core::get_config();
 
-    if (!ImGui::Begin("FRAME ADVANCE", open, ImGuiWindowFlags_AlwaysAutoResize)) {
+    if (!ImGui::Begin("FRAME ADVANCE", open)) {
         ImGui::End();
         return;
     }

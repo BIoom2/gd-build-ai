@@ -16,7 +16,7 @@ char g_search_buf[256] = {};
 void draw_settings(bool* open) {
     auto& cfg = core::get_config();
 
-    if (!ImGui::Begin("SETTINGS", open, ImGuiWindowFlags_AlwaysAutoResize)) {
+    if (!ImGui::Begin("SETTINGS", open)) {
         ImGui::End();
         return;
     }
