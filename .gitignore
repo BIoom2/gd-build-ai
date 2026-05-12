@@ -1,0 +1,25 @@
+build/
+build_*/
+out/
+cmake-build-*/
+.vs/
+.vscode/
+*.user
+*.suo
+*.tlog
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.idb
+*.aps
+
+# Generated runtime data
+bloom_macros/
+bloom_settings.json
+*.bloom
+
+# OS junk
+.DS_Store
+Thumbs.db
