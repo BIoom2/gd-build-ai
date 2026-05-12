@@ -1,0 +1,37 @@
+name: Build Bloom
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "src/**"
+      - "CMakeLists.txt"
+      - ".github/workflows/build.yml"
+  push:
+    branches:
+      - "**"
+
+jobs:
+  build:
+    name: Build Bloom (Windows x86 MSVC)
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure (MSVC, Win32)
+        shell: pwsh
+        run: |
+          cmake -S . -B build -A Win32 -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        shell: pwsh
+        run: |
+          cmake --build build --config Release --parallel
+
+      - name: Upload Bloom.dll
+        uses: actions/upload-artifact@v4
+        with:
+          name: Bloom-windows-x86
+          path: build/Release/Bloom.dll
+          if-no-files-found: error
