@@ -9,6 +9,7 @@
 #include "gd/GDClasses.hpp"
 #include "hooks/FrameStepper.hpp"
 #include "hooks/HookManager.hpp"
+#include "hooks/PulseTriggerHook.hpp"
 #include "util/Logger.hpp"
 
 namespace bloom::hooks {
@@ -73,6 +74,9 @@ void __fastcall hk_update(void* This, void* /*edx*/, float dt) {
     }
 
     if (g_orig_update) g_orig_update(This, nullptr, dt);
+
+    // Re-fire any tracked pulse triggers whose cycle has elapsed.
+    tick_pulse_trigger_loop(This, dt);
 }
 
 void __fastcall hk_pushButton(void* This, void* /*edx*/, int button, bool is_player2) {
@@ -109,6 +113,7 @@ void __fastcall hk_releaseButton(void* This, void* /*edx*/, int button, bool is_
 void __fastcall hk_resetLevel(void* This, void* /*edx*/) {
     g_physics_frame.store(0, std::memory_order_release);
     bot::Bot::instance().on_level_reset();
+    reset_pulse_trigger_state();
     if (g_orig_resetLevel) g_orig_resetLevel(This, nullptr);
 }
 

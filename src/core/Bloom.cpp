@@ -11,6 +11,7 @@
 #include "hooks/HookManager.hpp"
 #include "hooks/PlayLayerHook.hpp"
 #include "hooks/PlayerObjectHook.hpp"
+#include "hooks/PulseTriggerHook.hpp"
 #include "menu/Menu.hpp"
 #include "render/D3D9Hook.hpp"
 #include "util/Logger.hpp"
@@ -46,6 +47,7 @@ void Bloom::start(const std::string& dll_dir) {
     hooks::install_play_layer_hooks();
     hooks::install_player_object_hooks();
     hooks::install_fps_bypass_hooks();
+    hooks::install_pulse_trigger_hooks();
 
     // Frame stepper key bindings dispatch via Keybinds.
     auto& kb = get_keybinds();

@@ -15,6 +15,7 @@ struct CCPoint { float x; float y; };
 
 class PlayerObject;
 class PlayLayer;
+class EffectGameObject;
 
 inline void* shared_game_manager() {
     using Fn = void* (__cdecl*)();
@@ -69,6 +70,22 @@ inline float& rotation(PlayerObject* p) {
 }
 inline bool& is_holding(PlayerObject* p) {
     return field::at<bool>(p, gd21::k_PlayerObject_field_isHolding);
+}
+
+// EffectGameObject / GameObject accessors.
+constexpr int k_PulseTriggerObjectID = 1006;
+
+inline int& object_id(void* obj) {
+    return field::at<int>(obj, gd21::k_GameObject_field_objectID);
+}
+inline float& effect_fade_in(EffectGameObject* e) {
+    return field::at<float>(e, gd21::k_EffectGameObject_field_fadeIn);
+}
+inline float& effect_hold(EffectGameObject* e) {
+    return field::at<float>(e, gd21::k_EffectGameObject_field_hold);
+}
+inline float& effect_fade_out(EffectGameObject* e) {
+    return field::at<float>(e, gd21::k_EffectGameObject_field_fadeOut);
 }
 
 } // namespace bloom::gd

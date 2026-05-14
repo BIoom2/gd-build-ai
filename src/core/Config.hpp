@@ -60,6 +60,9 @@ struct Config {
     int  pickup_player1_id = 888;
     int  pickup_player2_id = 889;
 
+    // Pulse trigger loop.
+    bool pulse_trigger_loop = false;
+
     // Menu visual.
     std::array<float, 4> menu_color = {0.06f, 0.06f, 0.06f, 0.95f};
     float menu_size = 0.80f;

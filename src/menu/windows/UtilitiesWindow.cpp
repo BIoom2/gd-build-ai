@@ -24,6 +24,11 @@ void draw_utilities(bool* open) {
     if (search_matches("Show Frame"))       ImGui::Checkbox("Show Frame", &cfg.show_frame);
 
     ImGui::Separator();
+    if (search_matches("Pulse Trigger Loop")) {
+        ImGui::Checkbox("Pulse Trigger Loop", &cfg.pulse_trigger_loop);
+    }
+
+    ImGui::Separator();
     if (search_matches("Practice Mode Fix")) {
         ImGui::Checkbox("Practice Mode Fix", &cfg.practice_mode_fix);
     }

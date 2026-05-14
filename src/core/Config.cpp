@@ -75,6 +75,8 @@ nlohmann::json Config::to_json() const {
     j["pickup_player1_id"] = pickup_player1_id;
     j["pickup_player2_id"] = pickup_player2_id;
 
+    j["pulse_trigger_loop"] = pulse_trigger_loop;
+
     j["menu_color"] = menu_color;
     j["menu_size"] = menu_size;
     j["menu_search"] = menu_search;
@@ -146,6 +148,8 @@ void Config::from_json(const nlohmann::json& j) {
     load_field(j, "pickup_release_id", pickup_release_id);
     load_field(j, "pickup_player1_id", pickup_player1_id);
     load_field(j, "pickup_player2_id", pickup_player2_id);
+
+    load_field(j, "pulse_trigger_loop", pulse_trigger_loop);
 
     load_color(j, "menu_color", menu_color);
     load_field(j, "menu_size", menu_size);

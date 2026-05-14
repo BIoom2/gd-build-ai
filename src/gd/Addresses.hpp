@@ -52,6 +52,17 @@ namespace gd21 {
     constexpr std::uintptr_t k_PlayLayer_field_isPaused        = 0x000002EC;
     constexpr std::uintptr_t k_PlayLayer_field_levelTime       = 0x000003E4; // float (seconds since start)
 
+    // EffectGameObject::triggerObject — fires any trigger including pulse (ID 1006).
+    constexpr std::uintptr_t k_EffectGameObject_triggerObject   = 0x00253F50;
+
+    // GameObject field offsets.
+    constexpr std::uintptr_t k_GameObject_field_objectID        = 0x0000031C;
+
+    // EffectGameObject field offsets (pulse-trigger timing).
+    constexpr std::uintptr_t k_EffectGameObject_field_fadeIn    = 0x0000038C;
+    constexpr std::uintptr_t k_EffectGameObject_field_hold      = 0x00000390;
+    constexpr std::uintptr_t k_EffectGameObject_field_fadeOut   = 0x00000394;
+
     // FPS bypass injection points (replace cdecl callsites that read a constant).
     constexpr std::uintptr_t k_FPS_setupDelta_constant_site    = 0x0007A560;
 }
