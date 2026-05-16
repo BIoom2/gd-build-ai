@@ -6,7 +6,7 @@
 class GJGarageLayer;
 class SimplePlayer;
 
-class RandomSetPopup : public geode::Popup<GJGarageLayer*> {
+class RandomSetPopup : public geode::Popup {
 protected:
     struct IconSet {
         int cube = 1;
@@ -29,7 +29,7 @@ protected:
     cocos2d::CCSprite* m_colorSwatches[3] = { nullptr, nullptr, nullptr };
     cocos2d::CCLabelBMFont* m_glowLabel = nullptr;
 
-    bool setup(GJGarageLayer* garageLayer) override;
+    bool setupForGarage(GJGarageLayer* garageLayer);
     void generateSet();
     void updatePreviews();
     void applySet();

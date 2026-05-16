@@ -35,7 +35,7 @@ namespace {
 
 RandomSetPopup* RandomSetPopup::create(GJGarageLayer* garageLayer) {
     auto ret = new RandomSetPopup();
-    if (ret->initAnchored(380.f, 260.f, garageLayer, "GJ_square01.png")) {
+    if (ret->setupForGarage(garageLayer)) {
         ret->autorelease();
         return ret;
     }
@@ -43,7 +43,10 @@ RandomSetPopup* RandomSetPopup::create(GJGarageLayer* garageLayer) {
     return nullptr;
 }
 
-bool RandomSetPopup::setup(GJGarageLayer* garageLayer) {
+bool RandomSetPopup::setupForGarage(GJGarageLayer* garageLayer) {
+    if (!Popup::init(380.f, 260.f)) {
+        return false;
+    }
     m_garageLayer = garageLayer;
     this->setTitle("Random Set");
 
@@ -225,7 +228,7 @@ void RandomSetPopup::applySet() {
     gm->setPlayerColor2(m_set.color2);
     gm->m_playerGlow = m_set.useGlow;
     if (m_set.useGlow) {
-        gm->setPlayerGlowColor(m_set.glow);
+        gm->setPlayerColor3(m_set.glow);
     }
 }
 
