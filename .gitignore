@@ -1,0 +1,10 @@
+build/
+build-*/
+.cache/
+.vscode/
+.idea/
+.vs/
+*.user
+CMakeUserPresets.json
+.geode/
+out/

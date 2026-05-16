@@ -1,0 +1,14 @@
+{
+    "geode": "4.4.0",
+    "gd": {
+        "win": "2.2074",
+        "mac": "2.2074",
+        "android": "2.2074"
+    },
+    "version": "v1.0.0",
+    "id": "biom2.random-set",
+    "name": "Random Set",
+    "developer": "Biom2",
+    "description": "Adds a button in the icon kit menu that generates a random set of icons and colors.",
+    "tags": ["customization", "interface"]
+}
